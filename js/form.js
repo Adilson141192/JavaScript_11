@@ -4,12 +4,16 @@ botaoAdicionar.addEventListener("click", function(event) {
 
     var form = document.querySelector("#form-adiciona");
     var paciente = obtemPacienteDoFormulario(form);
+
     var pacienteTr = montaTr(paciente);
 
-    if (!validaPaciente(paciente)) {
-        console.log("Paciente inválido");
+    var erros = validaPaciente(paciente);
+
+    if (erros.length > 0) {
+        var mensagemErro = document.querySelector("#mensagem-erro");
+        mensagemErro.textContent = erros;
         return;
-    }
+}
 
     //
     var tabela = document.querySelector("#tabela-pacientes");
@@ -52,9 +56,16 @@ function montaTd(dado,classe) {
 }
 
 function validaPaciente(paciente) {
-    if (validaPeso(paciente.peso)) {
-        return true;
-    } else {
-        return false;
+
+    var erros = [];
+
+    if (!validaPeso(paciente.peso)) {
+        erros.push("Peso é inválido");
     }
+
+    if (!validaAltura(paciente.altura)) {
+        erros.push("Altura é inválida");
+    }
+
+    return erros;
 }
